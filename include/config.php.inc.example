@@ -1,0 +1,6 @@
+<?php
+ global $config;
+
+ $config['db']['connectString'] = 'mysql://user:pass@host:port/tc-db-main';
+
+?>
