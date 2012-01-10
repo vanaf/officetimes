@@ -7,4 +7,5 @@
 <h3>Необходимо аутентифицироваться</h3>
 {include file="login.tpl"}
 {$content}
+<a href="https://github.com/vanaf/officetimes" target="_blank">Customize</a>
 </body>
