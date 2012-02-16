@@ -1,5 +1,5 @@
 <?php
- ini_set('session.auto_start','1');
+ini_set('session.auto_start','1');
  session_start();
  require_once 'require.php.inc';
 
@@ -24,12 +24,12 @@ $defact= $_SESSION['userId']?'showperiods':'auth';
    $content=$acts->$action();
    $smarty->assign($content);
    $template=$content['template']?$content['template']:$template;
-   if(!$smarty->template_exists($template.'.tpl')){
+   if(!$smarty->templateExists($template.'.tpl')){
      $template='default';
    }
 
  }else{
-   if(!$smarty->template_exists($template.'.tpl')){
+   if(!$smarty->templateExists($template.'.tpl')){
      $template='noAction';
    }
  }

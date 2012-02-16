@@ -1,4 +1,4 @@
-{config_load file=test.conf section="setup"}
+{config_load file="test.conf" section="setup"}
 <HTML>
 <HEAD>
 <TITLE>{$title}</TITLE>
