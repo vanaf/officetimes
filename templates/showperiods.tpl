@@ -9,6 +9,7 @@ var startTime;
 var timew;
 var timed;
 var timep;
+var lasttime;
 
 function tick(){
 	setTimeout(tick,1000);
@@ -44,6 +45,7 @@ function secondsToTime( seconds ){
 
 
 function beginCheck(){
+updatePersons();
 	if($.trim($("#firste").text())==""){
 		startTime = (new Date()).getTime();
 //		alert(startTime);
@@ -58,6 +60,21 @@ function beginCheck(){
 //		alert("Внутри");
 	}
 }
+
+function updatePersons(){
+{/literal}
+
+
+$.getJSON('?a=showemps_json&id={$perid}&parent=-1&time='+lasttime, function(data) {literal} {
+if(data.length){
+window.location.reload();
+}else{
+setTimeout(updatePersons,10000);
+}
+});        
+}
+
+
 
 
 window.onload = beginCheck;
@@ -85,7 +102,7 @@ border-top-width: 2px !important;
 </style>
 {/literal}
 
-<table border='1' style='border-collapse:collapse;' cellpadding="5">
+<table border='1' style='border-collapse:collapse;' id="periods" cellpadding="5">
 <tr>
 <th>
 {if $period eq 'month'}
@@ -104,6 +121,7 @@ border-top-width: 2px !important;
 {assign var="idd" value=' id="firstd"'}
 {assign var="idp" value=' id="firstp"'}
 {assign var="ide" value=' id="firste"'}
+
 
 {foreach from=$times item=time}
 
@@ -145,6 +163,13 @@ border-top-width: 2px !important;
 {$time.sduration}
 </td>
 <td>
+{if $ide ne ''}
+<script type="text/javascript">
+lasttime='{math equation="max(x,y)" x=$time.enter_time_t y=$time.exit_time_t|default:0}';
+</script>
+
+{/if}
+
 {$time.enter_time|date_format:"%k:%M"}
 </td>
 <td{$ide}>

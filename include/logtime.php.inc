@@ -106,7 +106,7 @@ ORDER BY lweek desc, ifnull(ldate,'2099-01-01') desc, ifnull(enter_time,'2099-01
    }else{
 
         $sth = $this->db->prepare("
-SELECT lweek, ldate, sduration,secduration, kolvo, time(enter_time) as enter_time, if(date(exit_time)=ldate,time(exit_time),exit_time) AS exit_time 
+SELECT lweek, ldate, sduration,secduration, kolvo, time(enter_time) as enter_time, unix_timestamp(enter_time) as enter_time_t, if(date(exit_time)=ldate,time(exit_time),exit_time) AS exit_time, unix_timestamp(exit_time) as exit_time_t 
 FROM (
 
 SELECT $groupfunc as lweek , DATE( enter_time ) as ldate , SEC_TO_TIME( SUM( TIME_TO_SEC( duration ) ) ) as sduration,SUM( TIME_TO_SEC( duration ) ) as secduration, count(enter_time) as kolvo,enter_time, exit_time
