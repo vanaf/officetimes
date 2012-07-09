@@ -116,7 +116,7 @@ $secleft=$params['hours']?$params['hours']*3600-$timeList[0]['secduration']:0;
     $voidPers = new Personal();
     $key=$params['key']?$params['key']:0;
 
-    $empList= $voidPers->getEmpsList('and SUBSTRING( HEX(  `CODEKEY` ) , 5, 4 ) = HEX(?) ',array('integer'),array($key));
+    $empList= $voidPers->getEmpsList('and SUBSTRING( HEX(  `CODEKEY` ) , 5, 4 ) = LPAD(HEX(?),4,"0") ',array('integer'),array($key));
     if($empList&&$empList[0]['id']){
      $_SESSION['userId']=$empList[0]['id'];
      session_write_close();
