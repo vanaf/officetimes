@@ -1,61 +1,74 @@
 {include file="header.tpl"}
 
-<h3>OpenSoft: 
+
 {if $parent}
-<a href='?a=showdeps&parent={$parent_parent}'>></a>
+<ul class="pager"><li class="previous"><a href='?a=showdeps&parent={$parent_parent}' xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">На уровень выше</a></li></ul>
 
 {/if}
-{$parent}</h3>
+<h1 id="parent">{$parent}</h1>
+
 {assign var='lasttime' value='0'}
 
 {if $denied}
-<h4>Ты сюда не ходи, ты <a href='?a=showdeps&parent=17'>туда</a> ходи, а то мало ли чего нехорошего может случиться...</h4>
 {else}
 
+
+
+<div id="wl">
 {if $parent_id>=0}
-<a href='?a=showdeps&parent=-1'>Показать всех</a>
+{*<div id="showall"><a href='?a=showdeps&parent=-1'>Показать всех</a></div>*}
 {/if}
 
-{if $dep_list}
-<h4>Отделы</h4>
+<div id="deplist">{if $dep_list}
+    <div id="showall"><a href='?a=showdeps&parent=-1'>Показать всех</a></div>
+    <div id="linkstmar"> {foreach from=$dep_list item=dep}
+    <div class="linkst"><a href='?a=showdeps&parent={$dep.id}'>{$dep.name}</a></div>
+    {/foreach}</div>
+</div>
 
-<table border=1>
-<tr><th>Название</th></tr>
 
-
-{foreach from=$dep_list item=dep}
-<tr>
-<td><a href='?a=showdeps&parent={$dep.id}'>{$dep.name}</a> </td>
-</tr>
-{/foreach}
-
-</table>
 {/if}
+</div>
 
 {if $emp_list}
-<h4>Персоны</h4>
-
-<table border=1>
-<tr><th>Имя</th><th>Где?</th><th>Когда?</th></tr>
-
+        <table id="fruitbox">
+        <thead>
+<tr ><th>Имя</th><th>Где?</th><th>Когда?</th></tr>
+        </thead>
+      <tbody>
 {foreach from=$emp_list item=dep}
-<tr>
-<td>{$dep.name}</td>
-<td id='{$dep.id}_location'>{if $dep.locationzone}<font color='red'>Снаружи</font>{else}<font color='green'>Внутри</font>{/if}</td>
-<td id='{$dep.id}_time'><a href='?a=showperiods&id={$dep.id}' target='rightframe'>{$dep.locationact}</a></td>
+    
+<tr >
+    <td class="firstcolumn">{$dep.name}</td>
+    <td class="secondcolumn" id='{$dep.id}_location'>{if $dep.locationzone}<span class="label label-important">Снаружи</span>{else}<span class="label2 label-success"> Внутри </span>{/if}</td>
+    <td class="thirdcolumn" id='{$dep.id}_time'><a href='?a=showperiods&id={$dep.id}' target='rightframe'>{$dep.locationact}</a></td>
 </tr>
 {math assign='lasttime' equation="max(x,y)" x=$lasttime y=$dep.locationact_t|default:0}
 {/foreach}
-
+        </tbody>
 </table>
 
+
+
 {/if}
+</ul></div>
+
+<script type="text/javascript">
+    $(document).ready(function() 
+    { 
+        $("#fruitbox").tablesorter(); 
+        DCH.wearchanger();
+    } 
+    ); 
+        
+        </script>
+
 
 <script type="text/javascript">
 var lasttime={$lasttime};
 {literal}
 
-document.body.addEventListener('click', function() {
+    document.body.addEventListener('click', function() {
     window.webkitNotifications.requestPermission();
   }, true);
 
@@ -72,7 +85,7 @@ $.getJSON('?a=showemps_json&parent={$parent_id}&time='+lasttime, function(data) 
   $.each(data, function(key, val) {
 lasttime=val.time;
 
-document.getElementById(val.id+'_location').innerHTML = val.inside? '<font color="green">Внутри</font>' : '<font color="red">Снаружи</font>';
+document.getElementById(val.id+'_location').innerHTML = val.inside? '<span class="label label-success">Внутри</span>' : '<span class="label label-important">Снаружи</span>';
 dat=new Date(val.time*1000);
 document.getElementById(val.id+'_time').getElementsByTagName('a')[0].innerHTML = dat.getFullYear() + "-" + (dat.getMonth()+1) + "-" + dat.getDate() + " " +  zerofill(dat.getHours()) + ":" + zerofill(dat.getMinutes()) + ":" + zerofill(dat.getSeconds());
   if (window.webkitNotifications.checkPermission() == 0&&data.length<5) { // 0 is PERMISSION_ALLOWED
@@ -98,3 +111,5 @@ setInterval( "updatePersons()", 2000 );
 
 {/if}
 {include file="footer.tpl"}
+
+

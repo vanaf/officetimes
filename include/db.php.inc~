@@ -13,7 +13,6 @@ if (PEAR::isError($db)) {
      */
     echo 'Standard Message: ' . $db->getMessage() . "\n";
     echo 'Standard Code: ' . $db->getCode() . "\n";
-echo 'debug: ' . $db->getDebugInfo() . "\n";
     exit;
 }
 
