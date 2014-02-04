@@ -2,9 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link rel="stylesheet" href="css/style.css" media="all"> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script> 
 <script type="text/javascript">
 {literal}
+
 var startTime;
 var timew;
 var timed;
@@ -13,15 +14,21 @@ var lasttime;
 
 function tick(){
 	setTimeout(tick,1000);
-	$('#firstw').text(actualizeTime(timew));
+   	$('#firstw').text(actualizeTime(timew));
 	$('#firstd').text(actualizeTime(timed));
-	$('#firstp').text(actualizeTime(timep));	
+	$('#firstp').text(actualizeTime(timep));
+
+
+
 }
 
 function actualizeTime( time ){
 	currTime = (new Date()).getTime();
+          
 	return secondsToTime( timeToSeconds(time) + Math.round((currTime-startTime)/1000));
+        
 }
+    
 
 function timeToSeconds( time ){
 	parts = time.split(":");
@@ -34,11 +41,14 @@ function timeToSeconds( time ){
 function secondsToTime( seconds ){
         hours = Math.floor(seconds/3600);
         minutes = Math.floor(seconds%3600/60);
+            
         seconds = seconds%60;
+       
 	hours = hours<10 ? "0" + hours : hours;
 	minutes = minutes<10 ? "0" + minutes : minutes;
 	seconds = seconds<10 ? "0" + seconds : seconds;
         return hours+":"+minutes+":"+seconds;
+          
 }
 
 
@@ -48,61 +58,56 @@ function beginCheck(){
 updatePersons();
 	if($.trim($("#firste").text())==""){
 		startTime = (new Date()).getTime();
-//		alert(startTime);
 		timew = $.trim($("#firstw").text());
 		timed = $.trim($("#firstd").text());
 		timep = $.trim($("#firstp").text());
-		//actualizeTime(timew);
+
+
 
 
 
 		setTimeout(tick,1000);
-//		alert("Внутри");
+
+
 	}
 }
 
 function updatePersons(){
 {/literal}
+    
+   $.getJSON('?a=showemps_json&id={$perid}&parent=-1&time='+window.parent.window.lasttime, function(data) {literal} {
+        if(data.length){
+            window.location.reload();
+        }else{
+            setTimeout(updatePersons,10000);
+        }
+    });   
 
-
-$.getJSON('?a=showemps_json&id={$perid}&parent=-1&time='+lasttime, function(data) {literal} {
-if(data.length){
-window.location.reload();
-}else{
-setTimeout(updatePersons,10000);
 }
-});        
-}
-
-
-
 
 window.onload = beginCheck;
 {/literal}
+    
 </script> 
 
 </head>
 <body>
-<b>{$person}</b> <form style='display:inline; margin:0;'target='_parent'>
+<form class="well form-search" style='display:inline-block; margin-top:10;'target='_parent'><div id="formstyle"><b>{$person}</b>
 {if $logout eq null}
 <input type='hidden' name='a' value='showperiods'>
 <input type='hidden' name='id' value='{$perid}'>
 {/if}
-<input size='1' type='text' name='hours' value='{$hours}'>часов
-<input type='submit' value='ok'></form> 
+<input size='1' type='text' class="input-medium search-query" name='hours' value='{$hours}'>часов
+<input type='submit' class="btn2 btn-success" value='ok'>
+
 {$logout}
+</div>
+</form>
+{*{$logout}*}
 {literal}
-<style type="text/css">
-.week  td {
-border-top-width: 3px !important;
-}
-.date td {
-border-top-width: 2px !important;
-}
-</style>
 {/literal}
 
-<table border='1' style='border-collapse:collapse;' id="periods" cellpadding="5">
+<table class="table table-bordered" border='1' style='border-collapse:collapse; ' id="periods" cellpadding="5">
 <tr>
 <th>
 {if $period eq 'month'}
@@ -166,6 +171,9 @@ border-top-width: 2px !important;
 {if $ide ne ''}
 <script type="text/javascript">
 lasttime='{math equation="max(x,y)" x=$time.enter_time_t y=$time.exit_time_t|default:0}';
+
+
+
 </script>
 
 {/if}
@@ -197,7 +205,7 @@ lasttime='{math equation="max(x,y)" x=$time.enter_time_t y=$time.exit_time_t|def
       <div id="container">
         <div id="canvas-content">
           <div id="countdown">
-            <script type="text/javascript"> 
+            <script type="text/javascript">
                 var leftSeconds = {$secLeft};
             </script>
           </div>

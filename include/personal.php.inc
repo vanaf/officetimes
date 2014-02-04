@@ -2,7 +2,7 @@
  class Personal {
   var $db, $id, $nick,$email, $groups;
 
-  function Personal($id = 0, $parent=0, $type = 'EMP', $name = '', $pos = '', $lastzone = '', $lasttime='') {
+  function Personal($id = '', $parent='', $type = 'EMP', $name = '', $pos = '', $lastzone = '', $lasttime='') {
     global $db;
     $this->db = $db;
     $this->id = $id;

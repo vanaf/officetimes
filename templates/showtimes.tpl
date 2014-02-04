@@ -3,6 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 <body>
+
 <b>{$person}</b> {$logout}
 
 <table border='1'>
@@ -18,8 +19,7 @@
 
 {if $time.ldate ne $olddate}
 {if $olddate}
-</td>
-</tr>
+
 {/if}
 <tr>
 <td>{$time.ldate}<br>&#x2245;{$time.tdiff}</td><td><font color="{$color}">{$time.ltime}</font>
